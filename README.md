@@ -1,51 +1,71 @@
-Social Network Application with Neo4j and Python
-Overview
+# Social Network Application with Neo4j and Python
+
+## Overview
+
 This project is a Python-based Social Network Application that utilizes Neo4j, a graph database, to manage user profiles and their relationships. The application demonstrates how to create multiple users, establish friendships, list friends, and remove friendships using Neo4j's graph database capabilities in conjunction with Python.
 
-Features
-Create Multiple Users: Add multiple user profiles to the Neo4j database.
-Create Multiple Friendships: Establish FRIENDS_WITH relationships between multiple users.
-List Friends for Multiple Users: Retrieve and display friends for specified users.
-Remove Multiple Friendships: Delete FRIENDS_WITH relationships between specified users.
-Prerequisites
-Neo4j Database: Ensure you have access to a Neo4j database instance. You will need the connection URI, username, and password.
-Python: Python should be installed on your system. It is recommended to use a virtual environment.
-Python Packages: The neo4j Python package is required. Install it using pip.
-bash
-Copy code
+## Features
+
+- **Create Multiple Users**: Add multiple user profiles to the Neo4j database.
+- **Create Multiple Friendships**: Establish `FRIENDS_WITH` relationships between multiple users.
+- **List Friends for Multiple Users**: Retrieve and display friends for specified users.
+- **Remove Multiple Friendships**: Delete `FRIENDS_WITH` relationships between specified users.
+
+## Prerequisites
+
+1. **Neo4j Database**: Ensure you have access to a Neo4j database instance. You will need the connection URI, username, and password.
+2. **Python**: Python should be installed on your system. It is recommended to use a virtual environment.
+3. **Python Packages**: The `neo4j` Python package is required. Install it using pip.
+
+```bash
 pip install neo4j
-Project Structure
-social_network_app.py: Main application code for creating users, managing friendships, and interacting with the Neo4j database.
-requirements.txt: Lists the required Python packages for the project.
-Code Explanation
-Import Statements
-python
-Copy code
+```
+
+## Project Structure
+
+- **`social_network_app.py`**: Main application code for creating users, managing friendships, and interacting with the Neo4j database.
+- **`requirements.txt`**: Lists the required Python packages for the project.
+
+## Code Explanation
+
+### Import Statements
+
+```python
 import logging
 from neo4j import GraphDatabase, RoutingControl
 from neo4j.exceptions import DriverError, Neo4jError
-logging: For logging errors and information.
-GraphDatabase: To interact with the Neo4j database.
-RoutingControl: For managing query routing.
-DriverError, Neo4jError: For handling Neo4j exceptions.
-SocialNetworkApp Class
-Initialization
-python
-Copy code
+```
+
+- **`logging`**: For logging errors and information.
+- **`GraphDatabase`**: To interact with the Neo4j database.
+- **`RoutingControl`**: For managing query routing.
+- **`DriverError`, `Neo4jError`**: For handling Neo4j exceptions.
+
+### `SocialNetworkApp` Class
+
+#### Initialization
+
+```python
 class SocialNetworkApp:
     def __init__(self, uri, user, password, database=None):
         self.driver = GraphDatabase.driver(uri, auth=(user, password))
         self.database = database
-Initializes the Neo4j driver and database connection.
-Closing the Connection
-python
-Copy code
+```
+
+- Initializes the Neo4j driver and database connection.
+
+#### Closing the Connection
+
+```python
     def close(self):
         self.driver.close()
-Closes the Neo4j driver connection.
-Creating Users
-python
-Copy code
+```
+
+- Closes the Neo4j driver connection.
+
+#### Creating Users
+
+```python
     def create_users(self, usernames):
         with self.driver.session() as session:
             for username in usernames:
@@ -54,10 +74,13 @@ Copy code
                     logging.info("Created user: %s", result["username"])
                 except Exception as e:
                     logging.error("Failed to create user: %s", e)
-Creates user profiles in the database.
-Creating Friendships
-python
-Copy code
+```
+
+- Creates user profiles in the database.
+
+#### Creating Friendships
+
+```python
     def create_friendships(self, friendships):
         with self.driver.session() as session:
             for user1, user2 in friendships:
@@ -66,10 +89,13 @@ Copy code
                     logging.info("Created friendship between: %s and %s", result["user1"], result["user2"])
                 except Exception as e:
                     logging.error("Failed to create friendship: %s", e)
-Establishes FRIENDS_WITH relationships between users.
-Listing Friends
-python
-Copy code
+```
+
+- Establishes `FRIENDS_WITH` relationships between users.
+
+#### Listing Friends
+
+```python
     def list_friends(self, usernames):
         with self.driver.session() as session:
             for username in usernames:
@@ -78,10 +104,13 @@ Copy code
                     logging.info("Friends of %s: %s", username, friends)
                 except Exception as e:
                     logging.error("Failed to list friends for %s: %s", username, e)
-Retrieves and displays friends for specified users.
-Removing Friendships
-python
-Copy code
+```
+
+- Retrieves and displays friends for specified users.
+
+#### Removing Friendships
+
+```python
     def remove_friendships(self, friendships):
         with self.driver.session() as session:
             for user1, user2 in friendships:
@@ -90,10 +119,13 @@ Copy code
                     logging.info("Removed friendship between: %s and %s", result["user1"], result["user2"])
                 except Exception as e:
                     logging.error("Failed to remove friendship: %s", e)
-Removes FRIENDS_WITH relationships between users.
-Main Execution
-python
-Copy code
+```
+
+- Removes `FRIENDS_WITH` relationships between users.
+
+### Main Execution
+
+```python
 if __name__ == "__main__":
     # Configuration
     scheme = "neo4j+s"  # Use the appropriate scheme
@@ -132,14 +164,18 @@ if __name__ == "__main__":
         app.list_friends(["Alice", "Bob", "Charlie"])
     finally:
         app.close()
-Initializes and demonstrates the functionality of the SocialNetworkApp class.
-Usage
-Configure the Connection:
+```
 
-Update the scheme, host_name, port, user, password, and database with your Neo4j instance details.
-Run the Application:
+- Initializes and demonstrates the functionality of the `SocialNetworkApp` class.
 
-Execute the script using Python to perform operations like creating users, establishing friendships, listing friends, and removing friendships.
-Check Logs:
+## Usage
 
-Review the logs for information on operations performed and any errors encountered.
+1. **Configure the Connection**:
+   - Update the `scheme`, `host_name`, `port`, `user`, `password`, and `database` with your Neo4j instance details.
+
+2. **Run the Application**:
+   - Execute the script using Python to perform operations like creating users, establishing friendships, listing friends, and removing friendships.
+
+3. **Check Logs**:
+   - Review the logs for information on operations performed and any errors encountered.
+
